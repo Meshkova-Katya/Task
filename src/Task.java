@@ -1,10 +1,7 @@
-import sun.applet.Main;
-
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
-
-
 import java.util.logging.Level;
-
 import java.util.logging.Logger;
 
 
@@ -14,38 +11,60 @@ public class Task {
 
     static {
         try {
-            LOGGER = Logger.getLogger(Main.class.getName());
+            LOGGER = Logger.getLogger(Task.class.getName());
         } catch (Exception ignore) {
             ignore.printStackTrace();
         }
     }
 
     public static void main(String[] args) {
-
+        List<Integer> list = new ArrayList<>();
         try {
-            int i, mk7 = 0, max = 0, mpr = 0, x, res, n = 0;
             LOGGER.log(Level.INFO, "Создаём цикл с постусловием");
-            do {
+            while (true) {
                 LOGGER.log(Level.WARNING, "Если будет введено не целочисленное число, будет ошибка");
-                System.out.println("Введите х");
-                x = scanner.nextInt();
-                if ((x % 7 == 0) && (x % 49 != 0) && (x > mk7)) mk7 = x;
-                if ((x > max) && (x % 7 != 0)) max = x;
-                n++;
-            } while (x != 0);
+                System.out.println("Введите x");
+                int x = scanner.nextInt();
+                if (x == 0) {
+                    break;
+                }
+                list.add(x);
+            }
+            int mpr = calc(list);
+            System.out.println("Введёно чисел " + list.size());
             System.out.println("Введите res");
-            res = scanner.nextInt();
-            mpr = mk7 * max;
-            if (mpr == 0) mpr = 1;
-            System.out.println("Введёно чисел " + (n - 1));
+            int res = scanner.nextInt();
             System.out.println("Контрольное значение " + res);
             System.out.println("Вычисленное значение " + mpr);
             System.out.print("Значения");
-            if (res != mpr) System.out.print(" не");
+            if (res != mpr) {
+                System.out.print(" не");
+            }
             System.out.print(" совпали");
-
         } catch (Exception e) {
             LOGGER.log(Level.WARNING, "что-то пошло не так", e);
+        }
+    }
+
+    public static int calc(List<Integer> list) {
+        try {
+            int mk7 = 0, max = 0, mpr = 0;
+            for (int x : list) {
+                if ((x % 7 == 0) && (x % 49 != 0) && (x > mk7)) {
+                    mk7 = x;
+                }
+                if ((x > max) && (x % 7 != 0)) {
+                    max = x;
+                }
+            }
+            mpr = mk7 * max;
+            if (mpr == 0) {
+                mpr = 1;
+            }
+            return mpr;
+        } catch (Exception e) {
+            LOGGER.log(Level.WARNING, "Ошибка расчета", e);
+            throw e;
         }
     }
 }
